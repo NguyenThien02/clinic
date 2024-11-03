@@ -1,7 +1,9 @@
 package com.do_an.clinic.controller;
 
+import com.do_an.clinic.dtos.UserLoginDTO;
 import com.do_an.clinic.dtos.UserRegisterDTO;
 import com.do_an.clinic.models.User;
+import com.do_an.clinic.response.LoginResponse;
 import com.do_an.clinic.services.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,8 @@ import java.util.List;
 public class UserController {
     private final IUserService userService;
 
-    @PostMapping("register")
+    // Đăng ký tài khoản
+    @PostMapping("/register")
     public ResponseEntity<?> createUser(
             @Valid @RequestBody UserRegisterDTO userRegisterDTO,
             BindingResult result
@@ -44,4 +47,24 @@ public class UserController {
         }
     }
 
+    // Đăng nhập tài khoản
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO userLoginDTO) {
+        try {
+            String token = userService.login(
+                    userLoginDTO.getPhoneNumber(),
+                    userLoginDTO.getPassword(),
+                    userLoginDTO.getRoleId() == null ? 1 : userLoginDTO.getRoleId()
+            );
+            User user = userService.getUserByPhoneNumber(userLoginDTO.getPhoneNumber());
+
+            return ResponseEntity.ok(LoginResponse.builder()
+                    .userId(user.getId())
+                    .token(token)
+                    .roleId(user.getRole().getId())
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
