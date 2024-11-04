@@ -17,3 +17,8 @@ api:
 jwt:
   expiration: 2592000    # 30 days = 30 * 24 * 60 * 60 = 2592000
   secretKey: JyTrVJHstjDzFa/ad82sI2oWgHLausH1pYf7U5hm5DM=
+
+servlet:
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB

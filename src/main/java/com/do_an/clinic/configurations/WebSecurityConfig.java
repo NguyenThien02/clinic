@@ -2,6 +2,7 @@ package com.do_an.clinic.configurations;
 
 
 import com.do_an.clinic.filters.JwtTokenFilter;
+import com.do_an.clinic.models.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +42,11 @@ public class WebSecurityConfig {
                                     String.format("%s/users/register", apiPrefix),
                                     String.format("%s/users/login", apiPrefix)
                             ).permitAll()
+
+                            .requestMatchers(GET,
+                                    String.format("%s/doctors/**", apiPrefix)).permitAll()
+                            .requestMatchers(PUT,
+                                    String.format("%s/doctors/**",apiPrefix)).hasRole(Role.DOCTOR)
 
                             .requestMatchers(GET,
                                     String.format("%s/roles**", apiPrefix)).permitAll()
