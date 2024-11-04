@@ -45,6 +45,12 @@ public class WebSecurityConfig {
                             .requestMatchers(GET,
                                     String.format("%s/roles**", apiPrefix)).permitAll()
 
+                            .requestMatchers(GET,
+                                    String.format("%s/specialties**", apiPrefix)).permitAll()
+
+                            .requestMatchers(GET,
+                                    String.format("%s/services**", apiPrefix)).permitAll()
+
                             .anyRequest().authenticated();
                 })
                 .csrf(AbstractHttpConfigurer::disable);
