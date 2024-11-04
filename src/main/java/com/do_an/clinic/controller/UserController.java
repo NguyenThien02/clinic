@@ -4,16 +4,14 @@ import com.do_an.clinic.dtos.UserLoginDTO;
 import com.do_an.clinic.dtos.UserRegisterDTO;
 import com.do_an.clinic.models.User;
 import com.do_an.clinic.response.LoginResponse;
+import com.do_an.clinic.response.UserResponse;
 import com.do_an.clinic.services.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -59,12 +57,23 @@ public class UserController {
             User user = userService.getUserByPhoneNumber(userLoginDTO.getPhoneNumber());
 
             return ResponseEntity.ok(LoginResponse.builder()
-                    .userId(user.getId())
                     .token(token)
                     .roleId(user.getRole().getId())
                     .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    //lấy user detail từ token
+    @GetMapping("/details")
+    public ResponseEntity<UserResponse> getUserDetails(@RequestHeader("Authorization") String token) {
+        try {
+            String extractedToken = token.substring(7); // Loại bỏ "Bearer " từ chuỗi token
+            User user = userService.getUserDetailsFromToken(extractedToken);
+            return ResponseEntity.ok(UserResponse.fromUser(user));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

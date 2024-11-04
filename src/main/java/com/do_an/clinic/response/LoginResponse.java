@@ -10,8 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class LoginResponse {
-    @JsonProperty("user_id")
-    private Long userId;
 
     @JsonProperty("role_id")
     private Long roleId;

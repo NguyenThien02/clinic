@@ -80,6 +80,17 @@ public class UserService implements IUserService{
     @Override
     public User getUserByPhoneNumber(String phoneNumber) throws DataNotFoundException {
         return userRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new DataNotFoundException("Cannot find user with phoneNumber: " + phoneNumber));
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy người dùng có số điện thoại: " + phoneNumber));
+    }
+
+    // Lấy user detail từ token
+    @Override
+    public User getUserDetailsFromToken(String token) throws Exception {
+        if(jwtTokenUtils.isTokenExpired(token)){
+            throw new Exception("Token đã hết hạn");
+        }
+        String phoneNumber = jwtTokenUtils.extractPhoneNumber(token);
+        Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
+        return user.get();
     }
 }
