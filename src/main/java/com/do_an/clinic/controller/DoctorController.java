@@ -124,4 +124,16 @@ public class DoctorController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // Lấy ra thông tin chi tiết của bác sĩ
+    @GetMapping("{doctor_id}")
+    public ResponseEntity<?> getDoctorById(@PathVariable("doctor_id") Long doctorId){
+        try {
+            Doctor doctor = doctorService.getDoctorById(doctorId);
+            DoctorResponse doctorResponse = DoctorResponse.fromDoctor(doctor);
+            return ResponseEntity.ok(doctorResponse);
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

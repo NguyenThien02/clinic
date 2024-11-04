@@ -24,8 +24,15 @@ public class DoctorService implements IDoctorService{
     @Override
     public Doctor uploadImageDoctor(Long id, String fileName) throws DataNotFoundException {
         Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Cannot find doctor id = " + id));
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy doctor có id= " + id));
         doctor.setImageUrl(fileName);
         return doctorRepository.save(doctor);
+    }
+
+    @Override
+    public Doctor getDoctorById(Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy doctor có id= " + doctorId));
+        return doctor;
     }
 }

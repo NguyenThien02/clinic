@@ -9,4 +9,6 @@ public interface IDoctorService {
     Page<Doctor> getAllDoctors(PageRequest pageRequest, Long specialtyId);
 
     Doctor uploadImageDoctor(Long id, String fileName) throws DataNotFoundException;
+
+    Doctor getDoctorById(Long doctorId);
 }
