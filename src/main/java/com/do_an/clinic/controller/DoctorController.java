@@ -1,10 +1,12 @@
 package com.do_an.clinic.controller;
 
 
+import com.do_an.clinic.dtos.DoctorDTO;
 import com.do_an.clinic.models.Doctor;
 import com.do_an.clinic.response.DoctorListResponse;
 import com.do_an.clinic.response.DoctorResponse;
 import com.do_an.clinic.services.DoctorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -126,13 +130,33 @@ public class DoctorController {
     }
 
     // Lấy ra thông tin chi tiết của bác sĩ
-    @GetMapping("{doctor_id}")
-    public ResponseEntity<?> getDoctorById(@PathVariable("doctor_id") Long doctorId){
+    @GetMapping("{user_id}")
+    public ResponseEntity<?> getDoctorByUserId(@PathVariable("user_id") Long userId){
+        Doctor doctor = doctorService.getDoctorByUserId(userId);
+        DoctorResponse doctorResponse = DoctorResponse.fromDoctor(doctor);
+        return ResponseEntity.ok(doctorResponse);
+    }
+
+    // Đăng ký bác sĩ
+    @PostMapping("/register")
+    public ResponseEntity<?> createDoctor(
+            @Valid @RequestBody DoctorDTO doctorDTO
+    ){
         try {
-            Doctor doctor = doctorService.getDoctorById(doctorId);
+            Doctor doctor = doctorService.crateDoctor(doctorDTO);
+            return ResponseEntity.ok(doctor);
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PutMapping("{doctor_id}")
+    public ResponseEntity<?> updateDoctor(@PathVariable("doctor_id") Long doctorId,
+                                          @RequestBody DoctorDTO doctorDTO){
+        try {
+            Doctor doctor =doctorService.updateDoctor(doctorId, doctorDTO);
             DoctorResponse doctorResponse = DoctorResponse.fromDoctor(doctor);
             return ResponseEntity.ok(doctorResponse);
-        }catch (Exception e) {
+        }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

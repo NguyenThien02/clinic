@@ -1,7 +1,8 @@
 package com.do_an.clinic.services;
 
 import com.do_an.clinic.components.JwtTokenUtils;
-import com.do_an.clinic.dtos.UserRegisterDTO;
+import com.do_an.clinic.dtos.PasswordDTO;
+import com.do_an.clinic.dtos.UserDTO;
 import com.do_an.clinic.exceptions.DataNotFoundException;
 import com.do_an.clinic.exceptions.PermissionDenyException;
 import com.do_an.clinic.models.Role;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,25 +33,25 @@ public class UserService implements IUserService{
     //Đăng ký tài khoản
     @Override
     @Transactional
-    public User crateUser(UserRegisterDTO userRegisterDTO) throws Exception {
-        String phoneNumber = userRegisterDTO.getPhoneNumber();
+    public User crateUser(UserDTO userDTO) throws Exception {
+        String phoneNumber = userDTO.getPhoneNumber();
         if(userRepository.existsByPhoneNumber(phoneNumber)){
             throw new DataIntegrityViolationException("Số điện thoại đã tồn tại");
         }
-        Role role = roleRepository.findById(userRegisterDTO.getRoleId())
+        Role role = roleRepository.findById(userDTO.getRoleId())
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy Role"));
         if(role.getName().equals(Role.ADMIN)){
             throw new PermissionDenyException("Bạn không thể đăng ký tài khoản Admin");
         }
         User newUser = User.builder()
-                .fullName(userRegisterDTO.getFullName())
-                .phoneNumber((userRegisterDTO.getPhoneNumber()))
-                .password(userRegisterDTO.getPassword())
-                .birthday(userRegisterDTO.getBirthday())
-                .address(userRegisterDTO.getAddress())
+                .fullName(userDTO.getFullName())
+                .phoneNumber((userDTO.getPhoneNumber()))
+                .password(userDTO.getPassword())
+                .birthday(userDTO.getBirthday())
+                .address(userDTO.getAddress())
                 .build();
         newUser.setRole(role);
-        String passwrod = userRegisterDTO.getPassword();
+        String passwrod = userDTO.getPassword();
         String encodedPassword = passwordEncoder.encode(passwrod);
         newUser.setPassword(encodedPassword);
         return userRepository.save(newUser);
@@ -92,5 +94,36 @@ public class UserService implements IUserService{
         String phoneNumber = jwtTokenUtils.extractPhoneNumber(token);
         Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
         return user.get();
+    }
+
+    @Override
+    public User updateUserById(long id, UserDTO userDTO) throws DataNotFoundException {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Cannot find user with id: " + id));
+
+        existingUser.setFullName(userDTO.getFullName());
+        existingUser.setBirthday(userDTO.getBirthday());
+        existingUser.setAddress(userDTO.getAddress());
+        return userRepository.save(existingUser);
+    }
+
+    @Override
+    public User updatePasswordById(long id, PasswordDTO passwordDTO) throws DataNotFoundException {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy người dùng có id: " + id));
+
+        if(!passwordEncoder.matches(passwordDTO.getPassword(),existingUser.getPassword())){
+            throw new BadCredentialsException("Số điện thoại hoặc mật khẩu không đúng");
+        }
+        String passwrod = passwordDTO.getNewPassword();
+        String encodedPassword = passwordEncoder.encode(passwrod);
+        existingUser.setPassword(encodedPassword);
+
+        return userRepository.save(existingUser);
+    }
+
+    @Override
+    public List<User> getUserDoctor() {
+        return userRepository.getUserDoctor();
     }
 }

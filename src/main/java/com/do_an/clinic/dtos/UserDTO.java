@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class UserRegisterDTO {
+public class UserDTO {
     @JsonProperty("full_name")
     private String fullName;
 

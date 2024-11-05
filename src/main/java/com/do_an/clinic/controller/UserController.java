@@ -1,7 +1,8 @@
 package com.do_an.clinic.controller;
 
+import com.do_an.clinic.dtos.PasswordDTO;
 import com.do_an.clinic.dtos.UserLoginDTO;
-import com.do_an.clinic.dtos.UserRegisterDTO;
+import com.do_an.clinic.dtos.UserDTO;
 import com.do_an.clinic.models.User;
 import com.do_an.clinic.response.LoginResponse;
 import com.do_an.clinic.response.UserResponse;
@@ -24,7 +25,7 @@ public class UserController {
     // Đăng ký tài khoản
     @PostMapping("/register")
     public ResponseEntity<?> createUser(
-            @Valid @RequestBody UserRegisterDTO userRegisterDTO,
+            @Valid @RequestBody UserDTO userDTO,
             BindingResult result
     ){
         try {
@@ -35,10 +36,10 @@ public class UserController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessager);
             }
-            if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getRetypePassword())) {
+            if (!userDTO.getPassword().equals(userDTO.getRetypePassword())) {
                 return ResponseEntity.badRequest().body("Password does not match");
             }
-            User user = userService.crateUser(userRegisterDTO);
+            User user = userService.crateUser(userDTO);
             return ResponseEntity.ok(user);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -76,4 +77,40 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
     }
+    // cập nhật thông tin user
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUserById(@PathVariable("id") Long id,
+                                            @RequestBody UserDTO userDTO) {
+        try {
+            User user = userService.updateUserById(id, userDTO);
+            return ResponseEntity.ok(UserResponse.fromUser(user));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+   // cập nhật mật khẩu
+   @PutMapping("updatePassword/{id}")
+   public ResponseEntity<?> updatePasswordById(@PathVariable("id") long id,
+                                               @RequestBody PasswordDTO passwordDTO
+   ){
+       try {
+           if(!passwordDTO.getNewPassword().equals(passwordDTO.getRetypeNewPassword())){
+               return ResponseEntity.badRequest().body("Mật khẩu không khớp");
+           }
+           User user = userService.updatePasswordById(id, passwordDTO);
+           return ResponseEntity.ok(UserResponse.fromUser(user));
+       }catch (Exception e){
+           return ResponseEntity.badRequest().body(e.getMessage());
+       }
+   }
+
+   // Lấy ra danh sách các user có vai trò là doctor và không nằm trong bảng doctor
+   @GetMapping("/user-doctor")
+   public ResponseEntity<?> getUserDoctors() {
+       List<User> userDoctor = userService.getUserDoctor();
+       List<UserResponse> userResponseDoctor = userDoctor.stream()
+               .map(UserResponse::fromUser)
+               .toList();
+       return ResponseEntity.ok(userResponseDoctor);
+   }
 }

@@ -1,5 +1,6 @@
 package com.do_an.clinic.services;
 
+import com.do_an.clinic.dtos.DoctorDTO;
 import com.do_an.clinic.exceptions.DataNotFoundException;
 import com.do_an.clinic.models.Doctor;
 import org.springframework.data.domain.Page;
@@ -10,5 +11,9 @@ public interface IDoctorService {
 
     Doctor uploadImageDoctor(Long id, String fileName) throws DataNotFoundException;
 
-    Doctor getDoctorById(Long doctorId);
+    Doctor getDoctorByUserId(Long userId);
+
+    Doctor crateDoctor(DoctorDTO doctorDTO) throws Exception;
+
+    Doctor updateDoctor(Long doctorId, DoctorDTO doctorDTO) throws DataNotFoundException;
 }
