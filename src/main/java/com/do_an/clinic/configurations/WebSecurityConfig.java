@@ -65,6 +65,8 @@ public class WebSecurityConfig {
 
                             .requestMatchers(GET,
                                     String.format("%s/services**", apiPrefix)).permitAll()
+                            .requestMatchers(POST,
+                                    String.format("%s/services/getByIds**", apiPrefix)).permitAll()
 
                             .requestMatchers(GET,
                                     String.format("%s/time-slots**", apiPrefix)).permitAll()
@@ -75,6 +77,18 @@ public class WebSecurityConfig {
                                     String.format("%s/schedules/", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(GET,
                                     String.format("%s/schedules/user/**", apiPrefix)).hasRole(Role.USER)
+                            .requestMatchers(GET,
+                                    String.format("%s/schedules/doctor/**", apiPrefix)).hasRole(Role.DOCTOR)
+
+                            .requestMatchers(POST,
+                                    String.format("%s/profiles/", apiPrefix)).permitAll()
+                            .requestMatchers(POST,
+                                    String.format("%s/profiles/money/**", apiPrefix)).hasRole(Role.DOCTOR)
+                            .requestMatchers(GET,
+                                    String.format("%s/profiles/doctor/**", apiPrefix)).hasRole(Role.DOCTOR)
+
+                            .requestMatchers(POST,
+                                    String.format("%s/profileDetails/**", apiPrefix)).permitAll()
 
                             .anyRequest().authenticated();
                 })

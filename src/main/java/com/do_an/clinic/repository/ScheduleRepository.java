@@ -18,5 +18,12 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             @Param("doctorId") Long doctorId,
             @Param("date") Date date);
 
-    Page<Schedule> findByUserId(Long userId, PageRequest pageRequest);
+    // Lấy danh sách lịch khám theo userId và lịch khám không nằm trong danh sách profile
+    @Query("SELECT s FROM Schedule s LEFT JOIN Profile p ON p.schedule.id = s.id " +
+            "WHERE s.user.id = :userId AND p.id IS NULL")
+    Page<Schedule> findSchedulesWithoutProfileByUserId(@Param("userId") Long userId, PageRequest pageRequest);
+
+    @Query("SELECT s FROM Schedule s LEFT JOIN Profile p ON p.schedule.id = s.id " +
+            "WHERE s.doctor.id = :doctorId AND p.id IS NULL")
+    Page<Schedule> findSchedulesWithoutProfileByDoctorId(@Param("doctorId") Long doctorId, PageRequest pageRequest);
 }

@@ -15,4 +15,6 @@ public interface IScheduleService {
     Schedule createSchedule(ScheduleDTO scheduleDTO) throws Exception;
 
     Page<Schedule> getScheduleByUserId(Long userId, PageRequest pageRequest);
+
+    Page<Schedule> getScheduleByDoctorId(Long doctorId, PageRequest pageRequest);
 }

@@ -37,7 +37,7 @@ public class ScheduleController {
 
     // lấy ra danh sách lịch khám của user
     @GetMapping("/user/{user_id}")
-    public ResponseEntity<?> getScheduleUser(
+    public ResponseEntity<?> getScheduleByUserId(
             @PathVariable("user_id") Long userId,
             @RequestParam("page") int page,
             @RequestParam("limit") int limit) {
@@ -51,6 +51,28 @@ public class ScheduleController {
         List<ScheduleResponse> scheduleResponses = scheduleResponsePage.getContent();
         int totalPages = scheduleResponsePage.getTotalPages();
 
+        return ResponseEntity.ok(ScheduleListResponse.builder()
+                .scheduleResponses(scheduleResponses)
+                .totalPages(totalPages)
+                .build());
+    }
+
+    // Lấy ra danh sách lịch khám của bác sĩ
+    @GetMapping("/doctor/{doctor_id}")
+    public ResponseEntity<?> getScheduleByDoctorId(
+            @PathVariable("doctor_id") Long doctorId,
+            @RequestParam("page") int page,
+            @RequestParam("limit") int limit) {
+
+        PageRequest pageRequest = PageRequest.of(
+                page,
+                limit,
+                Sort.by("date").ascending());
+
+        Page<Schedule> schedulePage = scheduleService.getScheduleByDoctorId(doctorId, pageRequest);
+        Page<ScheduleResponse> scheduleResponsePage = schedulePage.map(ScheduleResponse::fromSchedule);
+        List<ScheduleResponse> scheduleResponses = scheduleResponsePage.getContent();
+        int totalPages = scheduleResponsePage.getTotalPages();
         return ResponseEntity.ok(ScheduleListResponse.builder()
                 .scheduleResponses(scheduleResponses)
                 .totalPages(totalPages)
