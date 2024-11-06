@@ -66,6 +66,16 @@ public class WebSecurityConfig {
                             .requestMatchers(GET,
                                     String.format("%s/services**", apiPrefix)).permitAll()
 
+                            .requestMatchers(GET,
+                                    String.format("%s/time-slots**", apiPrefix)).permitAll()
+
+                            .requestMatchers(POST,
+                                    String.format("%s/schedules/check_timeSlot**", apiPrefix)).permitAll()
+                            .requestMatchers(POST,
+                                    String.format("%s/schedules/", apiPrefix)).hasRole(Role.USER)
+                            .requestMatchers(GET,
+                                    String.format("%s/schedules/user/**", apiPrefix)).hasRole(Role.USER)
+
                             .anyRequest().authenticated();
                 })
                 .csrf(AbstractHttpConfigurer::disable);
