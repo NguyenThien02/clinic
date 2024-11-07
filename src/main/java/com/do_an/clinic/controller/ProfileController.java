@@ -3,10 +3,7 @@ package com.do_an.clinic.controller;
 import com.do_an.clinic.dtos.ProfileDTO;
 import com.do_an.clinic.models.Profile;
 import com.do_an.clinic.models.Schedule;
-import com.do_an.clinic.response.ProfileListResponse;
-import com.do_an.clinic.response.ProfileResponse;
-import com.do_an.clinic.response.ScheduleListResponse;
-import com.do_an.clinic.response.ScheduleResponse;
+import com.do_an.clinic.response.*;
 import com.do_an.clinic.services.ProfileService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +23,7 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
+    // Tạo hồ sơ mới
     @PostMapping("")
     public ResponseEntity<?> createProfile(@RequestBody ProfileDTO profileDTO) {
         try {
@@ -85,5 +83,13 @@ public class ProfileController {
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    // Xóa profile có profile_id
+    @DeleteMapping("/{profile_id}")
+    public ResponseEntity<?> deleteProfileById(@PathVariable("profile_id") Long profileId){
+        profileService.deleteProfileById(profileId);
+        MessengerResponse messenger = new MessengerResponse("Xóa profile thành công với id: " + profileId);
+        return ResponseEntity.ok(messenger);
     }
 }

@@ -11,6 +11,7 @@ import com.do_an.clinic.repository.DoctorRepository;
 import com.do_an.clinic.repository.ScheduleRepository;
 import com.do_an.clinic.repository.TimeSlotRepository;
 import com.do_an.clinic.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -62,5 +63,37 @@ public class ScheduleService implements IScheduleService {
     @Override
     public Page<Schedule> getScheduleByDoctorId(Long doctorId, PageRequest pageRequest) {
         return scheduleRepository.findSchedulesWithoutProfileByDoctorId(doctorId, pageRequest);
+    }
+
+    @Override
+    @Transactional
+    public void deleteScheduleById(Long scheduleId) {
+        scheduleRepository.deleteById(scheduleId);
+    }
+
+    @Override
+    public Schedule getScheduleById(Long scheduleId) {
+
+        return scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy schedule với id: "+ scheduleId));
+    }
+
+    @Override
+    public Schedule updateScheduleById(Long scheduleId, ScheduleDTO scheduleDTO) {
+        Schedule existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy schedule với id: "+ scheduleId));
+
+        Doctor doctor = doctorRepository.findById(scheduleDTO.getDoctorId())
+                        .orElseThrow(() -> new DataNotFoundException("Không tìm thấy doctor có Id: " + scheduleDTO.getDoctorId()));
+
+        TimeSlot timeSlot = timeSlotRepository.findById(scheduleDTO.getTimeSlotId())
+                        .orElseThrow(() -> new DataNotFoundException("Không tìm thấy timeslot có id: " + scheduleDTO.getTimeSlotId()));
+
+        existingSchedule.setUserName(scheduleDTO.getUserName());
+        existingSchedule.setUserPhone(scheduleDTO.getUserPhone());
+        existingSchedule.setDoctor(doctor);
+        existingSchedule.setDate(scheduleDTO.getDate());
+        existingSchedule.setTimeSlot(timeSlot);
+        return scheduleRepository.save(existingSchedule);
     }
 }

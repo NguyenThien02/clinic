@@ -18,4 +18,6 @@ public interface IProfileService {
     List<Profile>  getProfilesByuserId(Long userId);
 
     Profile updateProfile(Long profileId, ProfileDTO profileDTO) throws DataNotFoundException;
+
+    void deleteProfileById(Long profileId);
 }

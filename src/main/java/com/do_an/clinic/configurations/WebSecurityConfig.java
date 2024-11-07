@@ -73,10 +73,16 @@ public class WebSecurityConfig {
 
                             .requestMatchers(POST,
                                     String.format("%s/schedules/check_timeSlot**", apiPrefix)).permitAll()
+                            .requestMatchers(GET,
+                                    String.format("%s/schedules/**", apiPrefix)).permitAll()
                             .requestMatchers(POST,
+                                    String.format("%s/schedules/", apiPrefix)).hasRole(Role.USER)
+                            .requestMatchers(PUT,
                                     String.format("%s/schedules/", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(GET,
                                     String.format("%s/schedules/user/**", apiPrefix)).hasRole(Role.USER)
+                            .requestMatchers(DELETE,
+                                    String.format("%s/schedules/**", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(GET,
                                     String.format("%s/schedules/doctor/**", apiPrefix)).hasRole(Role.DOCTOR)
 
@@ -90,6 +96,8 @@ public class WebSecurityConfig {
                                     String.format("%s/profiles/doctor/**", apiPrefix)).hasRole(Role.DOCTOR)
                             .requestMatchers(GET,
                                     String.format("%s/profiles/user/**", apiPrefix)).hasRole(Role.USER)
+                            .requestMatchers(DELETE,
+                                    String.format("%s/profiles/**", apiPrefix)).hasRole(Role.USER)
 
                             .requestMatchers(POST,
                                     String.format("%s/profileDetails/**", apiPrefix)).permitAll()

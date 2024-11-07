@@ -4,12 +4,11 @@ import com.do_an.clinic.dtos.ProfileDTO;
 import com.do_an.clinic.exceptions.DataNotFoundException;
 import com.do_an.clinic.models.Profile;
 import com.do_an.clinic.models.Schedule;
+import com.do_an.clinic.repository.ProfileDetailRepository;
 import com.do_an.clinic.repository.ProfileRepository;
 import com.do_an.clinic.repository.ScheduleRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
 public class ProfileService implements IProfileService{
     private final ProfileRepository profileRepository;
     private final ScheduleRepository scheduleRepository;
-
+    private final ProfileDetailRepository profileDetailRepository;
 
     @Override
     public Profile createProfile(ProfileDTO profileDTO) throws Exception{
@@ -64,5 +63,12 @@ public class ProfileService implements IProfileService{
         existingProfile.setTotalMoney(profileDTO.getTotalMoney());
         existingProfile.setTotalInsuranceMoney(profileDTO.getTotalInsuranceMoney());
         return profileRepository.save(existingProfile);
+    }
+
+    @Override
+    @Transactional
+    public void deleteProfileById(Long profileId) {
+        profileDetailRepository.deleteByProfileId(profileId);
+        profileRepository.deleteById(profileId);
     }
 }

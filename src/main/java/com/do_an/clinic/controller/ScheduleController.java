@@ -4,6 +4,7 @@ import com.do_an.clinic.dtos.CheckTimeSlotDTO;
 import com.do_an.clinic.dtos.ScheduleDTO;
 import com.do_an.clinic.models.Schedule;
 import com.do_an.clinic.models.TimeSlot;
+import com.do_an.clinic.response.MessengerResponse;
 import com.do_an.clinic.response.ScheduleListResponse;
 import com.do_an.clinic.response.ScheduleResponse;
 import com.do_an.clinic.services.IScheduleService;
@@ -77,5 +78,31 @@ public class ScheduleController {
                 .scheduleResponses(scheduleResponses)
                 .totalPages(totalPages)
                 .build());
+    }
+
+    @DeleteMapping("/{schedule_id}")
+    public ResponseEntity<?> deleteScheduleById(@PathVariable("schedule_id") Long scheduleId){
+        scheduleService.deleteScheduleById(scheduleId);
+        MessengerResponse messenger = new MessengerResponse("Xóa schedule thành công với id: " + scheduleId);
+        return ResponseEntity.ok(messenger);
+    }
+
+    @GetMapping("/{schedule_id}")
+    public ResponseEntity<?> getScheduleById(@PathVariable("schedule_id") Long scheduleId){
+        Schedule schedule = scheduleService.getScheduleById(scheduleId);
+        ScheduleResponse scheduleResponse = ScheduleResponse.fromSchedule(schedule);
+        return ResponseEntity.ok(scheduleResponse);
+    }
+
+    @PutMapping("/{schedule_id}")
+    public ResponseEntity<?> updateScheduleById(@RequestBody ScheduleDTO scheduleDTO,
+                                                @PathVariable("schedule_id") Long scheduleId){
+        try {
+            Schedule schedule = scheduleService.updateScheduleById(scheduleId, scheduleDTO);
+            ScheduleResponse scheduleResponse = ScheduleResponse.fromSchedule(schedule);
+            return ResponseEntity.ok(scheduleResponse);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

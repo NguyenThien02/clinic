@@ -17,4 +17,10 @@ public interface IScheduleService {
     Page<Schedule> getScheduleByUserId(Long userId, PageRequest pageRequest);
 
     Page<Schedule> getScheduleByDoctorId(Long doctorId, PageRequest pageRequest);
+
+    void deleteScheduleById(Long scheduleId);
+
+    Schedule getScheduleById(Long scheduleId);
+
+    Schedule updateScheduleById(Long scheduleId, ScheduleDTO scheduleDTO);
 }
