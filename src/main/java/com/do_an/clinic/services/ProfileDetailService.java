@@ -38,4 +38,9 @@ public class ProfileDetailService implements IProfileDetailService{
         }
         return "Chi tiết hồ sơ đã được tạo thành công";
     }
+
+    @Override
+    public List<Service> getServicesByProfileId(Long profileId) {
+        return profileDetailRepository.findServicesByProfileId(profileId);
+    }
 }

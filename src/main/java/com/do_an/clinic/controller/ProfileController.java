@@ -58,7 +58,18 @@ public class ProfileController {
         List<ProfileResponse> profileResponses = profiles.stream()
                 .map(ProfileResponse::fromProfile)
                 .toList();
-
         return ResponseEntity.ok(profileResponses);
+    }
+
+    // Lấy ra profile có id
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProfileById(@PathVariable("id") Long profileId){
+        try {
+            Profile profile = profileService.getProfileById(profileId);
+            ProfileResponse profileResponse = ProfileResponse.fromProfile(profile);
+            return ResponseEntity.ok(profileResponse);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
