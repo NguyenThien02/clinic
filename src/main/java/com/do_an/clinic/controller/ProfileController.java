@@ -27,23 +27,25 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @PostMapping("")
-    public ResponseEntity<?> createProfile(@RequestBody ProfileDTO profileDTO){
+    public ResponseEntity<?> createProfile(@RequestBody ProfileDTO profileDTO) {
         try {
             Profile profile = profileService.createProfile(profileDTO);
             ProfileResponse profileResponse = ProfileResponse.fromProfile(profile);
             return ResponseEntity.ok(profileResponse);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    // Cập nhật tổng số tiền cho hồ sơ
-    @PutMapping("money/{profile_id}")
-    public ResponseEntity<?> updateProfileMoney(
+
+    // Cập nhật hồ sơ
+    @PutMapping("/{profile_id}")
+    public ResponseEntity<?> updateProfileFromDoctor(
             @PathVariable("profile_id") Long profileId,
             @RequestBody ProfileDTO profileDTO){
         try {
-            Profile profile =  profileService.updateProfileMoney(profileId, profileDTO);
-            return ResponseEntity.ok(profile);
+            Profile profile =  profileService.updateProfile(profileId, profileDTO);
+            ProfileResponse profileResponse = ProfileResponse.fromProfile(profile);
+            return ResponseEntity.ok(profileResponse);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -55,6 +57,18 @@ public class ProfileController {
             @PathVariable("doctor_id") Long doctorId) {
 
         List<Profile> profiles = profileService.getProfilesByDoctorId(doctorId);
+        List<ProfileResponse> profileResponses = profiles.stream()
+                .map(ProfileResponse::fromProfile)
+                .toList();
+        return ResponseEntity.ok(profileResponses);
+    }
+
+    // Lấy ra danh sách profile theo userId
+    @GetMapping("/user/{user_id}")
+    public ResponseEntity<?> getProfilesByuserId(
+            @PathVariable("user_id") Long userId) {
+
+        List<Profile> profiles = profileService.getProfilesByuserId(userId);
         List<ProfileResponse> profileResponses = profiles.stream()
                 .map(ProfileResponse::fromProfile)
                 .toList();

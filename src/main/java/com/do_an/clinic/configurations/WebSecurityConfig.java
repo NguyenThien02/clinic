@@ -88,6 +88,8 @@ public class WebSecurityConfig {
                                     String.format("%s/profiles/money/**", apiPrefix)).hasRole(Role.DOCTOR)
                             .requestMatchers(GET,
                                     String.format("%s/profiles/doctor/**", apiPrefix)).hasRole(Role.DOCTOR)
+                            .requestMatchers(GET,
+                                    String.format("%s/profiles/user/**", apiPrefix)).hasRole(Role.USER)
 
                             .requestMatchers(POST,
                                     String.format("%s/profileDetails/**", apiPrefix)).permitAll()

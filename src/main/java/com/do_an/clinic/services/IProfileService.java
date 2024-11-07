@@ -13,7 +13,9 @@ public interface IProfileService {
 
     Profile getProfileById(Long profileId) throws DataNotFoundException;
 
-    Profile updateProfileMoney(Long profileId, ProfileDTO profileDTO) throws DataNotFoundException;
-
     List<Profile> getProfilesByDoctorId(Long doctorId);
+
+    List<Profile>  getProfilesByuserId(Long userId);
+
+    Profile updateProfile(Long profileId, ProfileDTO profileDTO) throws DataNotFoundException;
 }

@@ -45,17 +45,24 @@ public class ProfileService implements IProfileService{
     }
 
     @Override
-    public Profile updateProfileMoney(Long profileId, ProfileDTO profileDTO) throws DataNotFoundException {
-        Profile existingProfile = profileRepository.findById(profileId)
-                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy profile có id: " + profileId));
-        existingProfile.setTotalMoney(profileDTO.getTotalMoney());
-        existingProfile.setTotalInsuranceMoney(profileDTO.getTotalInsuranceMoney());
-        return  profileRepository.save(existingProfile);
-    }
-
-    @Override
     public List<Profile> getProfilesByDoctorId(Long doctorId) {
         return profileRepository.findProfilesByDoctorId(doctorId);
     }
 
+    @Override
+    public List<Profile>  getProfilesByuserId(Long userId) {
+        return profileRepository.findProfilesByUserId(userId);
+    }
+
+    @Override
+    public Profile updateProfile(Long profileId, ProfileDTO profileDTO) throws DataNotFoundException {
+        Profile existingProfile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy profile có id: " + profileId));
+        existingProfile.setDiagnosis(profileDTO.getDiagnosis());
+        existingProfile.setTreatment(profileDTO.getTreatment());
+        existingProfile.setMedications(profileDTO.getMedications());
+        existingProfile.setTotalMoney(profileDTO.getTotalMoney());
+        existingProfile.setTotalInsuranceMoney(profileDTO.getTotalInsuranceMoney());
+        return profileRepository.save(existingProfile);
+    }
 }
