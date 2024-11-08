@@ -4,6 +4,8 @@ import com.do_an.clinic.dtos.PasswordDTO;
 import com.do_an.clinic.dtos.UserDTO;
 import com.do_an.clinic.exceptions.DataNotFoundException;
 import com.do_an.clinic.models.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -19,7 +21,14 @@ public interface IUserService {
     User updateUserById(long id, UserDTO userDTO) throws DataNotFoundException;
 
     User updatePasswordById(long id, PasswordDTO passWordDTO) throws DataNotFoundException;
+
     List<User> getUserDoctor() ;
+
+   Page<User> getAllByRoleId( Long roleId, PageRequest pageRequest);
+
+   User getByUserId(Long id);
+
+   void deleteUserById(Long id);
 
 }
 

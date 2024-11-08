@@ -5,10 +5,15 @@ import com.do_an.clinic.dtos.UserLoginDTO;
 import com.do_an.clinic.dtos.UserDTO;
 import com.do_an.clinic.models.User;
 import com.do_an.clinic.response.LoginResponse;
+import com.do_an.clinic.response.MessengerResponse;
+import com.do_an.clinic.response.UserListResponse;
 import com.do_an.clinic.response.UserResponse;
 import com.do_an.clinic.services.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -113,4 +118,41 @@ public class UserController {
                .toList();
        return ResponseEntity.ok(userResponseDoctor);
    }
+
+   // Lấy danh sách user có vai trò user
+    @GetMapping("/role-user")
+    public ResponseEntity<?> GetAllUsers(
+            @RequestParam("page") int page,
+            @RequestParam("limit") int limit
+    ){
+        PageRequest pageRequest = PageRequest.of(
+                page,
+                limit,
+                Sort.by("id").ascending()
+        );
+        Page<User> userPage = userService.getAllByRoleId(1L, pageRequest);
+        Page<UserResponse> userResponsePage = userPage.map(UserResponse::fromUser);
+        List<UserResponse> userResponses = userResponsePage.getContent();
+        int totalPages = userResponsePage.getTotalPages();
+        return ResponseEntity.ok(UserListResponse.builder()
+                .userResponses(userResponses)
+                .totalPages(totalPages)
+                .build()
+        );
+    }
+
+    // Lấy ra user theo userId
+    @GetMapping("/by-user-id/{id}")
+    public ResponseEntity<?> getByUserId(@PathVariable("id") Long id){
+        User user = userService.getByUserId(id);
+        UserResponse userResponse = UserResponse.fromUser(user);
+        return ResponseEntity.ok(userResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable("id") Long id){
+        userService.deleteUserById(id);
+        MessengerResponse messengerResponse = new MessengerResponse("Xóa thành công User có id: " + id);
+        return ResponseEntity.ok(messengerResponse);
+    }
 }

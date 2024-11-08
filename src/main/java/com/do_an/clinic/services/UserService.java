@@ -12,6 +12,8 @@ import com.do_an.clinic.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -126,4 +128,23 @@ public class UserService implements IUserService{
     public List<User> getUserDoctor() {
         return userRepository.getUserDoctor();
     }
+
+    @Override
+    public Page<User> getAllByRoleId(Long roleId, PageRequest pageRequest) {
+        return userRepository.findAllByRole_Id(1L, pageRequest);
+    }
+
+    @Override
+    public User getByUserId(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy user có id "+ id));
+    }
+
+    @Override
+    @Transactional
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+
 }

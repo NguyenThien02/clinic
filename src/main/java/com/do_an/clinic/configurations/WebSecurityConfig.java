@@ -49,6 +49,12 @@ public class WebSecurityConfig {
                                     String.format("%s/users/**", apiPrefix)).permitAll()
                             .requestMatchers(GET,
                                     String.format("%s/users/user-doctor**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(GET,
+                                    String.format("%s/users/role-user**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(DELETE,
+                                    String.format("%s/users/**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(GET,
+                                    String.format("%s/users/by-user-id/**", apiPrefix)).permitAll()
 
                             .requestMatchers(GET,
                                     String.format("%s/doctors/**", apiPrefix)).permitAll()

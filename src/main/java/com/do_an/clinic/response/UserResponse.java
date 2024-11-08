@@ -3,9 +3,11 @@ package com.do_an.clinic.response;
 
 import com.do_an.clinic.models.Role;
 import com.do_an.clinic.models.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -32,6 +34,14 @@ public class UserResponse {
     @JsonProperty("role")
     private Role role;
 
+    @JsonProperty("created_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime createdAt;
+
+    @JsonProperty("updated_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime updatedAt;
+
     public static UserResponse fromUser(User user){
         return UserResponse.builder()
                 .id(user.getId())
@@ -40,6 +50,8 @@ public class UserResponse {
                 .address(user.getAddress())
                 .birthday(user.getBirthday())
                 .role(user.getRole())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
                 .build();
     }
 }

@@ -5,6 +5,7 @@ import com.do_an.clinic.dtos.DoctorDTO;
 import com.do_an.clinic.models.Doctor;
 import com.do_an.clinic.response.DoctorListResponse;
 import com.do_an.clinic.response.DoctorResponse;
+import com.do_an.clinic.response.MessengerResponse;
 import com.do_an.clinic.services.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -159,5 +161,12 @@ public class DoctorController {
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @DeleteMapping("{doctor_id}")
+    private ResponseEntity<?> deleteDoctorById(@PathVariable("doctor_id") Long doctorId){
+        doctorService.deleteDoctorById(doctorId);
+        MessengerResponse messengerResponse = new MessengerResponse("Xóa thành công doctor có id: " + doctorId);
+        return ResponseEntity.ok(messengerResponse);
     }
 }

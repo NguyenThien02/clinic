@@ -16,4 +16,6 @@ public interface IDoctorService {
     Doctor crateDoctor(DoctorDTO doctorDTO) throws Exception;
 
     Doctor updateDoctor(Long doctorId, DoctorDTO doctorDTO) throws DataNotFoundException;
+
+    void deleteDoctorById(Long doctorId);
 }

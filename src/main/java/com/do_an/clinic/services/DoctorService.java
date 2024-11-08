@@ -85,10 +85,17 @@ public class DoctorService implements IDoctorService{
         if(doctorDTO.getJobDescription().isEmpty()){
             doctorDTO.setJobDescription(existingDoctor.getJobDescription());
         }
-
         existingDoctor.setSpecialty(specialty);
         existingDoctor.setTrainingProcess(doctorDTO.getTrainingProcess());
         existingDoctor.setJobDescription(doctorDTO.getJobDescription());
         return doctorRepository.save(existingDoctor);
     }
+
+    @Override
+    @Transactional
+    public void deleteDoctorById(Long doctorId) {
+        doctorRepository.deleteById(doctorId);
+    }
+
+
 }
