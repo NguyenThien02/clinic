@@ -71,13 +71,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
     //   Kiểm tra xem yêu cầu HTTP có nằm trong danh sách các đường dẫn và phương thức HTTP được cho phép bypass (bỏ qua) xác thực hay không.
     private boolean isBypassToken(@NonNull HttpServletRequest request){
-        final List<Pair<String,String>> bypassTokens = Arrays.asList(
+        final List<Pair<String, String>> bypassTokens = Arrays.asList(
                 Pair.of(String.format("%s/users", apiPrefix), "POST"),
-                Pair.of(String.format("%s/roles",apiPrefix), "GET"),
-                Pair.of(String.format("%s/specialties",apiPrefix), "GET"),
-                Pair.of(String.format("%s/services",apiPrefix), "GET"),
-                Pair.of(String.format("%s/doctors",apiPrefix), "GET")
+                Pair.of(String.format("%s/roles", apiPrefix), "GET"),
+                Pair.of(String.format("%s/specialties", apiPrefix), "GET"),
+                Pair.of(String.format("%s/services", apiPrefix), "GET"),
+                Pair.of(String.format("%s/doctors", apiPrefix), "GET")
         );
+
         for(Pair<String, String> bypassToken: bypassTokens){
             if(request.getServletPath().contains(bypassToken.getFirst()) &&
                     request.getMethod().equals(bypassToken.getSecond())){
@@ -85,5 +86,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         }
         return false;
+//        String requestPath = request.getServletPath();
+//        String requestMethod = request.getMethod();
+//        for (Pair<String, String> bypassToken : bypassTokens) {
+//            if (requestPath.equals(bypassToken.getFirst()) &&
+//                    requestMethod.equals(bypassToken.getSecond())) {
+//                return true;
+//            }
+//        }
+//        return false;
     }
+
 }

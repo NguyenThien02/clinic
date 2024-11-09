@@ -67,7 +67,15 @@ public class WebSecurityConfig {
                                     String.format("%s/roles**", apiPrefix)).permitAll()
 
                             .requestMatchers(GET,
-                                    String.format("%s/specialties**", apiPrefix)).permitAll()
+                                    String.format("%s/specialties/**", apiPrefix)).permitAll()
+                            .requestMatchers(GET,
+                                    String.format("%s/specialties/detail**", apiPrefix)).permitAll()
+                            .requestMatchers(POST,
+                                    String.format("%s/specialties/**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(PUT,
+                                    String.format("%s/specialties/**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(DELETE,
+                                    String.format("%s/specialties/**", apiPrefix)).hasRole(Role.ADMIN)
 
                             .requestMatchers(GET,
                                     String.format("%s/services**", apiPrefix)).permitAll()

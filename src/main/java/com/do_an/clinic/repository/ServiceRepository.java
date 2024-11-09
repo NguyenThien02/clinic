@@ -14,4 +14,7 @@ public interface ServiceRepository extends JpaRepository<Service, Long> {
     Page<Service> searchServices(@Param("specialtyId") Long specialtyId, Pageable pageable);
 
     List<Service> findAllByIdIn(List<Long> ids);
+
+    @Query("SELECT COUNT(d) FROM Service d WHERE d.specialty.id = :specialtyId")
+    int countBySpecialtyId(@Param("specialtyId") Long specialtyId);
 }

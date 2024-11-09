@@ -12,4 +12,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Page<Doctor> searchDoctors(Pageable pageable, @Param("specialtyId") Long specialtyId);
 
     Doctor findByUserId(Long userId);
+
+    @Query("SELECT COUNT(d) FROM Doctor d WHERE d.specialty.id = :specialtyId")
+    int countBySpecialtyId(@Param("specialtyId") Long specialtyId);
 }
