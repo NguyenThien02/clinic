@@ -58,8 +58,9 @@ public class SpecialtyService implements ISpecialtyService{
 
     @Override
     public void deleteSpecialtyById(Long specialtyId) {
+        doctorRepository.deleteDoctorsBySpecialtyId(specialtyId);
+        serviceRepository.deleteServiceBySpecialtyId(specialtyId);
         specialtyRepository.deleteById(specialtyId);
     }
-
 
 }

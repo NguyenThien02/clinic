@@ -80,6 +80,12 @@ public class WebSecurityConfig {
                             .requestMatchers(GET,
                                     String.format("%s/services**", apiPrefix)).permitAll()
                             .requestMatchers(POST,
+                                    String.format("%s/services**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(DELETE,
+                                    String.format("%s/services**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(PUT,
+                                    String.format("%s/services**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(POST,
                                     String.format("%s/services/getByIds**", apiPrefix)).permitAll()
 
                             .requestMatchers(GET,
