@@ -29,7 +29,7 @@ public class ScheduleController {
         return ResponseEntity.ok(emptyTimeSlot);
     }
 
-    @PostMapping("")
+    @PostMapping("/register")
     public ResponseEntity<?> createSchedule(@RequestBody ScheduleDTO scheduleDTO) throws Exception {
         Schedule schedule = scheduleService.createSchedule(scheduleDTO);
         ScheduleResponse scheduleResponse = ScheduleResponse.fromSchedule(schedule);
@@ -87,7 +87,7 @@ public class ScheduleController {
         return ResponseEntity.ok(messenger);
     }
 
-    @GetMapping("/{schedule_id}")
+    @GetMapping("/schedule-detail/{schedule_id}")
     public ResponseEntity<?> getScheduleById(@PathVariable("schedule_id") Long scheduleId){
         Schedule schedule = scheduleService.getScheduleById(scheduleId);
         ScheduleResponse scheduleResponse = ScheduleResponse.fromSchedule(schedule);

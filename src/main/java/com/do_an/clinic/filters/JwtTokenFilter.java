@@ -86,15 +86,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         }
         return false;
-//        String requestPath = request.getServletPath();
-//        String requestMethod = request.getMethod();
-//        for (Pair<String, String> bypassToken : bypassTokens) {
-//            if (requestPath.equals(bypassToken.getFirst()) &&
-//                    requestMethod.equals(bypassToken.getSecond())) {
-//                return true;
-//            }
-//        }
-//        return false;
     }
 
 }

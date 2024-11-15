@@ -36,9 +36,9 @@ public class ProfileController {
     }
 
     // Cập nhật hồ sơ
-    @PutMapping("/{profile_id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateProfileFromDoctor(
-            @PathVariable("profile_id") Long profileId,
+            @PathVariable("id") Long profileId,
             @RequestBody ProfileDTO profileDTO){
         try {
             Profile profile =  profileService.updateProfile(profileId, profileDTO);
@@ -86,8 +86,8 @@ public class ProfileController {
     }
 
     // Xóa profile có profile_id
-    @DeleteMapping("/{profile_id}")
-    public ResponseEntity<?> deleteProfileById(@PathVariable("profile_id") Long profileId){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProfileById(@PathVariable("id") Long profileId){
         profileService.deleteProfileById(profileId);
         MessengerResponse messenger = new MessengerResponse("Xóa profile thành công với id: " + profileId);
         return ResponseEntity.ok(messenger);

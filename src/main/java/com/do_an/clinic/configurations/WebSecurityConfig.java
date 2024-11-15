@@ -44,17 +44,17 @@ public class WebSecurityConfig {
                             ).permitAll()
 
                             .requestMatchers(GET,
-                                    String.format("%s/users/details/**", apiPrefix)).permitAll()
-                            .requestMatchers(PUT,
-                                    String.format("%s/users/**", apiPrefix)).permitAll()
+                                    String.format("%s/users/details**", apiPrefix)).permitAll()
+                            .requestMatchers(GET,
+                                    String.format("%s/users/by-user-id**", apiPrefix)).permitAll()
                             .requestMatchers(GET,
                                     String.format("%s/users/user-doctor**", apiPrefix)).hasRole(Role.ADMIN)
                             .requestMatchers(GET,
                                     String.format("%s/users/role-user**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(PUT,
+                                    String.format("%s/users/**", apiPrefix)).permitAll()
                             .requestMatchers(DELETE,
                                     String.format("%s/users/**", apiPrefix)).hasRole(Role.ADMIN)
-                            .requestMatchers(GET,
-                                    String.format("%s/users/by-user-id/**", apiPrefix)).permitAll()
 
                             .requestMatchers(GET,
                                     String.format("%s/doctors/**", apiPrefix)).permitAll()
@@ -62,6 +62,8 @@ public class WebSecurityConfig {
                                     String.format("%s/doctors/**",apiPrefix)).hasRole(Role.DOCTOR)
                             .requestMatchers(POST,
                                     String.format("%s/doctors/register/**",apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(DELETE,
+                                    String.format("%s/doctors/**",apiPrefix)).hasRole(Role.ADMIN)
 
                             .requestMatchers(GET,
                                     String.format("%s/roles**", apiPrefix)).permitAll()
@@ -92,17 +94,18 @@ public class WebSecurityConfig {
                                     String.format("%s/time-slots**", apiPrefix)).permitAll()
 
                             .requestMatchers(POST,
+                                    String.format("%s/schedules/register", apiPrefix)).hasRole(Role.USER)
+                            .requestMatchers(POST,
                                     String.format("%s/schedules/check_timeSlot**", apiPrefix)).permitAll()
                             .requestMatchers(GET,
-                                    String.format("%s/schedules/**", apiPrefix)).permitAll()
-                            .requestMatchers(POST,
-                                    String.format("%s/schedules/", apiPrefix)).hasRole(Role.USER)
-                            .requestMatchers(PUT,
-                                    String.format("%s/schedules/", apiPrefix)).hasRole(Role.USER)
+                                    String.format("%s/schedules/schedule-detail**", apiPrefix)).permitAll()
+
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/schedules/", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(GET,
                                     String.format("%s/schedules/user/**", apiPrefix)).hasRole(Role.USER)
-                            .requestMatchers(DELETE,
-                                    String.format("%s/schedules/**", apiPrefix)).hasRole(Role.USER)
+//                            .requestMatchers(DELETE,
+//                                    String.format("%s/schedules/**", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(GET,
                                     String.format("%s/schedules/doctor/**", apiPrefix)).hasRole(Role.DOCTOR)
 
@@ -110,8 +113,6 @@ public class WebSecurityConfig {
                                     String.format("%s/profiles/", apiPrefix)).hasRole(Role.DOCTOR)
                             .requestMatchers(GET,
                                     String.format("%s/profiles/", apiPrefix)).permitAll()
-                            .requestMatchers(POST,
-                                    String.format("%s/profiles/money/**", apiPrefix)).hasRole(Role.DOCTOR)
                             .requestMatchers(GET,
                                     String.format("%s/profiles/doctor/**", apiPrefix)).hasRole(Role.DOCTOR)
                             .requestMatchers(GET,
