@@ -94,7 +94,7 @@ public class UserController {
         }
     }
    // cập nhật mật khẩu
-   @PutMapping("updatePassword/{id}")
+   @PutMapping("/{id}/password")
    public ResponseEntity<?> updatePasswordById(@PathVariable("id") long id,
                                                @RequestBody PasswordDTO passwordDTO
    ){

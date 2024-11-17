@@ -43,7 +43,7 @@ public class ServiceController {
     }
 
     // Lấy ra danh sách các dịch vụ đã chọn
-    @PostMapping("/getByIds")
+    @PostMapping("/by-ids")
     public List<Service> getServicesByIds(@RequestBody List<Long> serviceIds) {
         return serviceService.findAllByIdIn(serviceIds);
     }
