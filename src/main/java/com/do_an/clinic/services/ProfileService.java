@@ -32,6 +32,8 @@ public class ProfileService implements IProfileService{
                 .diagnosis(profileDTO.getDiagnosis())
                 .treatment(profileDTO.getTreatment())
                 .medications(profileDTO.getMedications())
+                .totalMoney(profileDTO.getTotalMoney())
+                .totalInsuranceMoney(profileDTO.getTotalInsuranceMoney())
                 .build();
         return profileRepository.save(newProfile);
     }
