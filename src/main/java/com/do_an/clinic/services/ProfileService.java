@@ -70,6 +70,11 @@ public class ProfileService implements IProfileService{
     @Override
     @Transactional
     public void deleteProfileById(Long profileId) {
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy profile có id: " + profileId));
+        if (profile.getSchedule() != null) {
+            scheduleRepository.deleteById(profile.getSchedule().getId());
+        }
         profileDetailRepository.deleteByProfileId(profileId);
         profileRepository.deleteById(profileId);
     }

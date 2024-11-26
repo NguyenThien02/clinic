@@ -3,8 +3,6 @@ package com.do_an.clinic.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name="profiles")
 @Setter
