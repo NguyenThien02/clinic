@@ -1,24 +1,30 @@
 package com.do_an.clinic.services;
 
 import com.do_an.clinic.dtos.ServiceDTO;
+import com.do_an.clinic.dtos.ServiceUsageDTO;
 import com.do_an.clinic.exceptions.DataNotFoundException;
 import com.do_an.clinic.models.Service;
 import com.do_an.clinic.models.Specialty;
+import com.do_an.clinic.repository.ProfileDetailRepository;
 import com.do_an.clinic.repository.ServiceRepository;
 import com.do_an.clinic.repository.SpecialtyRepository;
+import com.do_an.clinic.response.ServiceResponseUsage;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
 @AllArgsConstructor
 public class ServiceService implements IServiceService{
     private final ServiceRepository serviceRepository;
     private final SpecialtyRepository specialtyRepository;
+    private final ProfileDetailRepository profileDetailRepository;
 
     @Override
     public Page<Service> getAllServices(Long specialtyId, PageRequest pageRequest) {
@@ -72,5 +78,22 @@ public class ServiceService implements IServiceService{
         return serviceRepository.save(exstingService);
     }
 
+    @Override
+    public Service getService(Long id) {
+        return serviceRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy service có id: "+ id));
+    }
+    @Override
+    public List<ServiceUsageDTO> getServiceUsageStatistics(Long serviceId, Long month) {
+        List<Object[]> results = profileDetailRepository.findServiceUsageByDay(serviceId, month);
 
+        return results.stream()
+                .map(result -> {
+                    ServiceUsageDTO dto = new ServiceUsageDTO();
+                    dto.setDate(((Number) result[0]).longValue()); // result[0] là ngày (date)
+                    dto.setTotalServicesUsed(((Number) result[1]).longValue()); // result[1] là tổng số dịch vụ
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
 }

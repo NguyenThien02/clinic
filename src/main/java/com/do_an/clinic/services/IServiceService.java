@@ -1,7 +1,9 @@
 package com.do_an.clinic.services;
 
 import com.do_an.clinic.dtos.ServiceDTO;
+import com.do_an.clinic.dtos.ServiceUsageDTO;
 import com.do_an.clinic.models.Service;
+import com.do_an.clinic.response.ServiceResponseUsage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -17,4 +19,9 @@ public interface IServiceService {
     void deleteServiceById(Long id);
 
     Service updateService(Long id, ServiceDTO serviceDTO);
+
+    Service getService(Long id);
+
+    List<ServiceUsageDTO> getServiceUsageStatistics(Long serviceId, Long month);
+
 }

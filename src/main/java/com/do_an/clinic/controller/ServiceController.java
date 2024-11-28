@@ -2,9 +2,11 @@ package com.do_an.clinic.controller;
 
 
 import com.do_an.clinic.dtos.ServiceDTO;
+import com.do_an.clinic.dtos.ServiceUsageDTO;
 import com.do_an.clinic.models.Service;
 import com.do_an.clinic.response.MessengerResponse;
 import com.do_an.clinic.response.ServiceListResponse;
+import com.do_an.clinic.response.ServiceResponseUsage;
 import com.do_an.clinic.services.IServiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +23,7 @@ import java.util.List;
 public class ServiceController {
     private final IServiceService serviceService;
 
-    @GetMapping("")
+    @GetMapping("all")
     public ResponseEntity<?> getAllService(@RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int limit,
                                            @RequestParam(defaultValue = "0", name = "specialty_id") Long specialtyId
@@ -67,7 +69,18 @@ public class ServiceController {
         return ResponseEntity.ok(service);
     }
 
-    
+    // get service detail
+    @GetMapping("detail/{id}")
+    public ResponseEntity<?> getServiceDetail(@PathVariable Long id,
+                                              @RequestParam("month") Long month){
+        Service service = serviceService.getService(id);
+        List<ServiceUsageDTO> statistics = serviceService.getServiceUsageStatistics(id, month);
+        ServiceResponseUsage serviceResponseUsage = ServiceResponseUsage.builder()
+                .service(service)
+                .statistics(statistics)
+                .build();
+        return ResponseEntity.ok(serviceResponseUsage);
+    }
 
 }
 

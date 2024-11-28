@@ -26,4 +26,5 @@ public interface ServiceRepository extends JpaRepository<Service, Long> {
     @Transactional
     @Query("DELETE FROM Service d WHERE d.specialty.id = :specialtyId")
     void deleteServiceBySpecialtyId(@Param("specialtyId") Long specialtyId);
+
 }
