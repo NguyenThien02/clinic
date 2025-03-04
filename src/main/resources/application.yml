@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/clinic?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://172.17.0.1:3336/clinic?useSSL=false&serverTimezone=UTC
+#    url: jdbc:mysql://localhost:3306/clinic?useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Thien?1010
@@ -11,7 +12,7 @@ spring:
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
-      format_sql: true
+      format_sql: truesa
 api:
   prefix: api/clinic
 jwt:
