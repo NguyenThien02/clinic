@@ -35,7 +35,6 @@ com/do_an/clinic/services/IUserService.class
 com/do_an/clinic/repository/ProfileRepository.class
 com/do_an/clinic/configurations/WebSecurityConfig.class
 com/do_an/clinic/dtos/UserLoginDTO.class
-com/do_an/clinic/configurations/WebSecurityConfig$1.class
 com/do_an/clinic/services/TimeSlotService.class
 com/do_an/clinic/models/ProfileDetail.class
 com/do_an/clinic/models/Doctor.class
