@@ -1,10 +1,12 @@
 spring:
   datasource:
-    url: jdbc:mysql://192.168.1.109:3336/clinic?useSSL=false&serverTimezone=UTC
+#    url: jdbc:mysql://192.168.1.109:3336/clinic?useSSL=false&serverTimezone=UTC
 #    url: jdbc:mysql://localhost:3306/clinic?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://root:FYTIKsCkvWwzBKTbxihqgcOLgdKijmQg@trolley.proxy.rlwy.net:48689/railway
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: Thien?1010
+#    password: Thien?1010
+    password: FYTIKsCkvWwzBKTbxihqgcOLgdKijmQg
   jpa:
     show-sql: true
     hibernate:
