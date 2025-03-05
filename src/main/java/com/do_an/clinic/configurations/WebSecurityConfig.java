@@ -102,12 +102,9 @@ public class WebSecurityConfig {
                             .requestMatchers(GET,
                                     String.format("%s/schedules/schedule-detail**", apiPrefix)).permitAll()
 
-//                            .requestMatchers(PUT,
-//                                    String.format("%s/schedules/", apiPrefix)).hasRole(Role.USER)
+
                             .requestMatchers(GET,
                                     String.format("%s/schedules/user/**", apiPrefix)).hasRole(Role.USER)
-//                            .requestMatchers(DELETE,
-//                                    String.format("%s/schedules/**", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(GET,
                                     String.format("%s/schedules/doctor/**", apiPrefix)).hasRole(Role.DOCTOR)
 
@@ -128,11 +125,10 @@ public class WebSecurityConfig {
                                     String.format("%s/profileDetails/**", apiPrefix)).permitAll()
 
                             .anyRequest().authenticated();
-                })
-                .csrf(AbstractHttpConfigurer::disable);
+                });
         http.cors(cors -> {
             CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(List.of("https://clinic-angular.onrender.com")); // Chỉ cho phép HTTPS
+            configuration.setAllowedOrigins(List.of("*"));
             configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
             configuration.setExposedHeaders(List.of("x-auth-token"));
@@ -140,7 +136,6 @@ public class WebSecurityConfig {
             source.registerCorsConfiguration("/**", configuration);
             cors.configurationSource(source);
         });
-
         return http.build();
     }
 }
