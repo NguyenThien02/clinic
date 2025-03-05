@@ -130,19 +130,30 @@ public class WebSecurityConfig {
                             .anyRequest().authenticated();
                 })
                 .csrf(AbstractHttpConfigurer::disable);
-        http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
-            @Override
-            public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
-                CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("*"));
-                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-                configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-                configuration.setExposedHeaders(List.of("x-auth-token"));
-                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-                source.registerCorsConfiguration("/**", configuration);
-                httpSecurityCorsConfigurer.configurationSource(source);
-            }
+//        http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
+//            @Override
+//            public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
+//                CorsConfiguration configuration = new CorsConfiguration();
+//                configuration.setAllowedOrigins(List.of("*"));
+//                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+//                configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+//                configuration.setExposedHeaders(List.of("x-auth-token"));
+//                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//                source.registerCorsConfiguration("/**", configuration);
+//                httpSecurityCorsConfigurer.configurationSource(source);
+//            }
+//        });
+        http.cors(cors -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(List.of("https://clinic-angular.onrender.com")); // Chỉ cho phép HTTPS
+            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+            configuration.setExposedHeaders(List.of("x-auth-token"));
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", configuration);
+            cors.configurationSource(source);
         });
+
         return http.build();
     }
 }
