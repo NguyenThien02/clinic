@@ -1,6 +1,11 @@
 GRANT ALL PRIVILEGES ON clinic.* TO 'user_clinic'@'%';
 FLUSH PRIVILEGES;
 
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+SET collation_connection = 'utf8mb4_unicode_ci';
+
+
 create database clinic;
 use clinic;
 
