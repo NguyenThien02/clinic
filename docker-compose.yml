@@ -5,6 +5,7 @@ services:
     container_name: mysql_clinic
     restart: always
     environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
       MYSQL_USER: user_clinic
       MYSQL_PASSWORD: Thien?1010
     ports:

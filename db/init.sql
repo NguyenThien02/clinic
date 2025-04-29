@@ -1,4 +1,4 @@
-GRANT ALL PRIVILEGES ON clinic.* TO 'user_clinic'@'%' IDENTIFIED BY 'Thien?1010';
+GRANT ALL PRIVILEGES ON clinic.* TO 'user_clinic'@'%';
 FLUSH PRIVILEGES;
 
 create database clinic;

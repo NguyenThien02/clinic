@@ -10,20 +10,19 @@ import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+
 
 import java.util.List;
 
 
 @Configuration
-@Profile({"dev", "test"})
 public class OpenApiConfig {
 
     @Bean
     public GroupedOpenApi publicApi(@Value("${openapi.service.api-docs}") String apiDocs) {
         return GroupedOpenApi.builder()
-                .group(apiDocs) // /v3/api-docs/backend-service
-                .packagesToScan("com.do_an.clinic")
+                .group(apiDocs)
+                .packagesToScan("com.do_an.clinic.controller")
                 .build();
     }
 

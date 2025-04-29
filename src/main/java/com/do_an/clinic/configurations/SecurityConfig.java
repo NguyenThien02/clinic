@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
                                 "Cannot find user with phone number = " + phoneNumber));
-        }
+    }
     // Mã hóa password
     @Bean
     public PasswordEncoder passwordEncoder() {
